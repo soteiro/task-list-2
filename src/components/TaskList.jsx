@@ -1,4 +1,6 @@
-export const TaskList = ({ tasks }) => {
+import { TaskRow } from "./TaskRow";
+
+export const TaskList = ({ tasks,toggleTask }) => {
   return (
     <div className="overflow-x-auto shadow-md sm:rounded-lg">
       <table className="w-full text-sm text-left text-gray-800">
@@ -8,13 +10,8 @@ export const TaskList = ({ tasks }) => {
           </tr>
         </thead>
         <tbody>
-          {tasks.map((task, index) => (
-            <tr 
-              key={index} 
-              className="task-item bg-white border-b hover:bg-gray-50"
-            >
-              <td className="px-6 py-4">{task.name}</td>
-            </tr>
+          {tasks.map((task) => (
+            <TaskRow task= {task} toggleTask={toggleTask}/>
           ))}
         </tbody>
       </table>

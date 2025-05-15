@@ -5,6 +5,7 @@ import { useState, useEffect} from "react";
 
 function App() {
   const [taskList, setTaskList] = useState([
+    { name: "Tarea 1", done: true },
   ]);
 
   useEffect(() => {
@@ -34,10 +35,15 @@ function App() {
     sessionStorage.setItem("task", JSON.stringify(taskList));
   }, [ taskList ])
 
+  const toggleTask = task =>{
+    setTaskList(
+    taskList.map(t => (task.name === t.name) ? {...t,done:!t.done}: t));
+  } 
+
   return (
     <div className="App">
       <TaskCreator createNewTask={createNewTask} />
-      <TaskList tasks={taskList} />
+      <TaskList tasks={taskList}  toggleTask= {toggleTask}/>
     </div>
   );
 }
