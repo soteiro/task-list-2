@@ -11,7 +11,14 @@ function App() {
   ]);
 
   function createNewTask(taskName) {
-    setTaskList([...taskList, { name: taskName, done: false }]);
+    // chekear el nombre de la tarea para ver si existe
+
+    if(!taskList.find(task => task.name === taskName)){
+      setTaskList([...taskList, { name: taskName, done: false }]);
+    }
+    else{
+      alert("la tarea ya existe");
+    }
   }
 
   return (
