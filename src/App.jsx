@@ -2,11 +2,11 @@ import "./App.css";
 import { TaskCreator } from "./components/TaksCreator.jsx";
 import { TaskList } from "./components/TaskList.jsx";
 import { useState, useEffect} from "react";
+import { VisibilityControl } from "./components/VisibilityControl.jsx";
 
 function App() {
-  const [taskList, setTaskList] = useState([
-    { name: "Tarea 1", done: true },
-  ]);
+  const [showCompleted, setShowCompleted] = useState(false);
+  const [taskList, setTaskList] = useState([]);
 
   useEffect(() => {
     console.log("first render");
@@ -14,7 +14,7 @@ function App() {
     if (data){
       setTaskList(JSON.parse(data));
     }
-  }, [ ])
+  }, [])
 
   function createNewTask(taskName) {
     // chekear el nombre de la tarea para ver si existe
@@ -40,10 +40,39 @@ function App() {
     taskList.map(t => (task.name === t.name) ? {...t,done:!t.done}: t));
   } 
 
+  const cleanTaskCompleted  = () => {
+    setTaskList(taskList.filter(task => !task.done));
+  }
+
   return (
-    <div className="App">
+    <div className="App container mx-auto px-4">
+      <h1 className="text-3xl font-bold text-center my-8">Lista de tareas</h1>
       <TaskCreator createNewTask={createNewTask} />
-      <TaskList tasks={taskList}  toggleTask= {toggleTask}/>
+
+      {/* Lista de tareas pendientes */}
+      <TaskList 
+        tasks={taskList}  
+        toggleTask={toggleTask} 
+        showCompleted={false} 
+        tableName="Tareas Pendientes"
+      />
+
+      {/* Control para mostrar tareas completadas */}
+      <VisibilityControl 
+        setShowCompleted={(checked) => setShowCompleted(checked)}
+         cleanTaskCompleted={cleanTaskCompleted}
+      />
+     
+
+      {/* Lista de tareas completadas (solo se muestra si showCompleted es true) */}
+      {showCompleted && (
+        <TaskList 
+          tasks={taskList}  
+          toggleTask={toggleTask} 
+          showCompleted={true} 
+          tableName="Tareas Completadas"
+        />
+      )}
     </div>
   );
 }
